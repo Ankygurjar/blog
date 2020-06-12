@@ -7,8 +7,11 @@ const PORT = process.env.PORT = 5000
 
 app.use(bodyParser.urlencoded({ extended: true }))
 
-const router = require('./routes/routing')
-app.use('/admin', router)
+const adminRouter = require('./routes/admin')
+app.use('/admin', adminRouter)
+
+const blogRouter = require('./routes/blog')
+app.use('/blog', blogRouter)
 
 app.listen(PORT, ()=>{
   console.log('Server is up and running', PORT)
