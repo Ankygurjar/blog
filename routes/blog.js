@@ -4,10 +4,10 @@ const router = require('express').Router()
 const bcryt = require('bcryptjs')
 
 const pool = new Pool({
-  user: "postgres",
-  host: "localhost",
-  database: "blog",
-  password: "admin",
+  user: "ankit",
+  host: "blog-1.cthkqb1wuvvt.us-east-2.rds.amazonaws.com",
+  database: "blogging",
+  password: "Mukeshmaa",
   port: 5432
 })
 
