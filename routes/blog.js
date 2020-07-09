@@ -25,15 +25,15 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage })
 
 router.get('/getBlogs', (req, res)=>{
-  const query = "SELECT * FROM blog"
-
+  let query = 'select * from blog'
   pool.query(query)
-    .then((data)=>{
+    .then(data=>{
       res.status(200).json(data.rows)
     })
     .catch(err=>{
       res.status(400).json(err)
     })
+
 })
 
 router.get('/myBlog/:id', (req, res)=>{
@@ -50,26 +50,43 @@ router.get('/myBlog/:id', (req, res)=>{
     })
 })
 
+router.get('/myAdminBlog/:id', (req, res)=>{
+  const id = req.params.id
+  const query = "SELECT * FROM blog WHERE user_id = $1"
+
+  pool.query(query, [id])
+    .then((data)=>{
+      res.status(200).json(data.rows)
+    })
+    .catch(err=>{
+      res.status(400).json(err)
+    })
+})
+
 router.post('/addBlog', upload.single('picture'),(req, res)=>{
 
   var dateTime = today.getFullYear()+"-"+(today.getMonth()+1)+"-"+today.getDate()+"  "+today.getHours()+":"+today.getMinutes()+":"+today.getSeconds()
 
-  console.log(req.file)
     let blogData = {
       blog_name: req.body.blog_name,
-      blog_body: req.body.blog_body,
+      blog_body: JSON.parse(req.body.blog_body),
       by: req.body.by,
-      picture: req.file.destination+"/"+req.file.filename,
-      category: req.body.category
+      picture: req.file.filename,
+      category: req.body.category,
+      user_id: parseInt(req.body.user_id)
     }
-    console.log(blogData.picture)
+    console.log(blogData)
     if( blogData.blog_name!= '' && blogData.blog_body!= '' && blogData.by!= '' && blogData.picture!= '' ){
-      const query = "INSERT INTO blog(blog_name, blog_body, by, picture, category) VALUES($1, $2, $3, $4, $5)"
-      pool.query(query, [blogData.blog_name, blogData.blog_body, blogData.by, blogData.picture, blogData.category])
+
+      const query = "insert into blog (blog_name, blog_body, by, picture, category, user_id) VALUES($1, $2, $3, $4, $5, $6)"
+      pool.query(query, [blogData.blog_name, blogData.blog_body, blogData.by, blogData.picture, blogData.category, blogData.user_id])
         .then((data)=>{
+
           res.status(200).json({status:"Blog has been added"})
+          pool.query("COMMIT TRANSACTION")
         })
         .catch(err=>{
+
           res.status(400).json(err)
         })
     }
@@ -80,7 +97,7 @@ router.post('/addBlog', upload.single('picture'),(req, res)=>{
 })
 
 router.put('/updateBlog/:id', upload.single('picture'),(req, res)=>{
-
+  console.log(req.body)
   const id = req.params.id
 
   const updateBlog = {
@@ -90,12 +107,13 @@ router.put('/updateBlog/:id', upload.single('picture'),(req, res)=>{
     category: req.body.category,
     picture: req.file.filename,
   }
-
   if(updateBlog.blog_name != '' && updateBlog.blog_body != '' && updateBlog.by != '' && updateBlog.picture != ''){
-          pool.query("UPDATE blog SET blog_name = $1, blog_body = $2, by = $3, picture = $4 WHERE blog_id=$5",
+    console.log(updateBlog)
+          pool.query("UPDATE blog SET blog_name = $1, blog_body = $2, by = $3, picture = $4, category = $5 WHERE blog_id=$6",
               [updateBlog.blog_name, updateBlog.blog_body, updateBlog.by, updateBlog.picture, updateBlog.category, id])
             .then(data=>{
               res.status(200).json({status:"Blog has been updated"})
+              pool.query("COMMIT TRANSACTION")
             })
             .catch(err=>{
               res.status(400).json(err)
@@ -112,6 +130,7 @@ router.delete('/deleteBLog/:id', (req, res)=>{
     pool.query("delete from blog where blog_id = $1", [id])
     .then(data=>{
       res.status(200).json({status:"Blog has been deleted"})
+      pool.query("COMMIT TRANSACTION")
     })
     .catch(err=>{
       res.status(400).json(err)
@@ -121,29 +140,40 @@ router.delete('/deleteBLog/:id', (req, res)=>{
   }
 })
 
+router.get('/getComments', (req, res)=>{
+  const query = "select * from blogcomment"
+  pool.query(query, (err, data)=>{
+    if(err){
+      res.status(400).json(err)
+    }
+    else{
+      res.status(200).json(data.rows)
+    }
+  })
+})
+
 router.post('/addComment', (req, res)=>{
+  console.log(req.body)
   const comment = {
     comment_body : req.body.comment_body,
     commentor : req.body.commentor,
     comment_email : req.body.comment_email,
     blog_id : req.body.blog_id
   }
-
-  console.log(req.body)
-
   if(comment.comment_body != '' && comment.commentor != '' && comment.comment_email!= '' && comment.blog_id != ''){
-    const query = 'INSERT INTO blogcomment(comment_body, commentor, comment_email, blog_id) VALUES($1, $2, $3, $4)'
+    console.log(comment)
+    const query = 'INSERT INTO blogcomment(comment_body, commentor, commentor_email, blog_id) VALUES($1, $2, $3, $4)'
     pool.query(query, [comment.comment_body, comment.commentor, comment.comment_email, comment.blog_id])
       .then(data=>{
         res.status(200).json({status: 'Comment saved '})
+        pool.query("COMMIT TRANSACTION")
       })
       .catch(err=>{
         res.status(400).json(err)
       })
   }else{
-    res.staus(400).json({status: 'Please enter all the deatils'})
+    res.status(400).json({status: 'Please enter all the deatils'})
   }
-
 })
 
 router.get('/getComments/:blogId', (req, res)=>{
@@ -166,6 +196,7 @@ router.delete('/deleteComment/:blogId', (req, res)=>{
   pool.query(query, [blogId])
     .then((data)=>{
       res.status(200).json({status:"Comment with id : "+blogId+" is deleted"})
+      pool.query("COMMIT TRANSACTION")
     })
     .catch(err=>{
       res.status(400).json(err)

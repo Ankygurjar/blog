@@ -1,0 +1,70 @@
+.container{
+  width:70%;
+  margin: auto;
+}
+
+.register-form{
+  background-color: lightgreen;
+  padding:10px;
+  margin: 10px;
+  border-radius: 10px;
+  width:70%;
+  margin: 10px auto;
+}
+
+.register-form h3{
+  text-align: center;
+}
+
+.input-field{
+  border:none;
+  border-bottom: 1px solid black;
+  width: 90%;
+  padding: 5px;
+  margin: 10px;
+  height: 20px;
+  border-radius: 10px;
+  font-weight: bold;
+}
+
+.add-blog{
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 10px;
+
+}
+
+.add-blog .content-name, .add-blog .category{
+  width: 97%;
+  height: 30px;
+  border-radius: 5px;
+}
+
+.add-blog .submit-blog{
+  width: 97%;
+  background-color: lightgreen;
+  border:none;
+  font-weight: bold;
+  height: 30px;
+  margin-top: 10px;
+  border-radius: 5px;
+}
+
+.update-btn{
+  background-color: lightblue;
+  padding: 10px;
+  border-radius: 5px;
+  margin: 10px;
+  border:none;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.dlt-btn{
+  background-color: red;
+  padding: 10px;
+  border-radius: 5px;
+  margin: 10px;
+  border:none;
+  font-weight: bold;
+}

@@ -1,15 +1,15 @@
 const express = require('express')
 const bodyParser = require('body-parser')
+const cors = require('cors')
 
 const app = express()
 
-const PORT = process.env.PORT = 5600
+const PORT = process.env.PORT = 6700
 
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.urlencoded({ extended:true }));
+app.use(bodyParser.json());
+app.use(cors())
 
-app.get('/', (req, res)=>{
-  res.json("Hello")
-})
 
 const adminRouter = require('./routes/admin')
 app.use('/admin', adminRouter)
