@@ -65,7 +65,7 @@ export default class Header extends Component{
       </div>
     )
     return(
-      <header className="header-1">
+      <header className="header-2">
       <script src="https://kit.fontawesome.com/a076d05399.js"></script>
         <div className="container">
 
@@ -80,7 +80,7 @@ export default class Header extends Component{
             </ul>
           </nav>
 
-          <form className="top-search" onSubmit={(e)=>{e.preventDefault()}}>
+          <form className="top-search" >
 
             <input type="text" className="searchBar" value={this.state.search} onChange={this.onChange} placeholder="enter your query...." name="query" />
             <Link className="searchBtn" to={`/search/?${this.state.search}`}>Search</Link>
@@ -89,7 +89,7 @@ export default class Header extends Component{
 
         </div>
         </div>
-        <p className="front-slogan">You final spot for Blogs...</p>
+
       </header>
     )
   }

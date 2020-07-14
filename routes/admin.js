@@ -3,6 +3,7 @@ const multer = require('multer')
 const router = require('express').Router()
 const bcryt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const path = require('path');
 
 const pool = new Pool({
   user: "ankit",
@@ -15,10 +16,12 @@ const pool = new Pool({
 process.env.SECRET_KEY = 'topSecret'
 var today = new Date()
 
+const imagePath = path.join(__dirname, '/../know/public/client_uploads');
+
 
 var storage = multer.diskStorage({
   destination: function(req, file, cb){
-    cb(null, 'uploads')
+    cb(null, imagePath)
   },
   filename: function(req, file, cb){
     cb(null, file.fieldname+'-'+ Date.now()+'.png')
@@ -56,7 +59,7 @@ router.get('/myAdmin/:id', (req, res)=>{
 router.post('/addAdmin', upload.single('picture'),(req, res)=>{
 
   var dateTime = today.getFullYear()+"-"+(today.getMonth()+1)+"-"+today.getDate()+"  "+today.getHours()+":"+today.getMinutes()+":"+today.getSeconds()
-  console.log(req.file)
+  console.log(req.body)
     let data = {
       name : req.body.name,
       username: req.body.username,
@@ -76,7 +79,12 @@ router.post('/addAdmin', upload.single('picture'),(req, res)=>{
           console.log(data)
           pool.query('INSERT INTO my_admin(name, username, password, email, role, profile_picture) VALUES($1, $2, $3, $4, $5, $6)', [data.name, data.username, data.password, data.email, data.role, data.profile_picture], (err, user)=>{
             if(err){
-              res.status(400).json(err)
+              if(err.constraint === "my_admin_email_key"){
+                res.status(400).json({status:"Email is already exist"})
+              }
+              else if(err.constraint === "my_admin_username_key"){
+                res.status(400).json({staus:"Username is already exist"})
+              }
             }else{
               res.status(200).json('User has been added')
               pool.query("COMMIT TRANSACTION")
@@ -93,6 +101,7 @@ router.post('/addAdmin', upload.single('picture'),(req, res)=>{
 })
 
 router.post('/login', (req, res)=>{
+  console.log(req.body)
   const user = {
     email: req.body.email
   }
@@ -123,6 +132,7 @@ router.post('/login', (req, res)=>{
 router.put('/updateAdmin/:id', upload.single('profile_picture'),(req, res)=>{
 
   const id = req.params.id
+  console.log(req.body)
 
   const updateUser = {
     username: req.body.username,

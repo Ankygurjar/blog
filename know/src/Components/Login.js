@@ -1,5 +1,8 @@
 import React, {Component} from 'react'
 import axios from 'axios'
+import Header from './Header2'
+import { faEnvelopeOpen, faKey, faSignInAlt} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default class Login extends Component{
 
@@ -36,7 +39,7 @@ export default class Login extends Component{
         console.log(res.data)
         sessionStorage.setItem('token', res.data.token)
 
-        this.props.history.push('/')
+        this.props.history.push('/user')
         window.location.reload()
       })
       .catch(err=>{
@@ -48,15 +51,18 @@ export default class Login extends Component{
   render(){
     return(
       <div>
-
+      <Header/>
+      <div className="register-form-background">
+        <div className="container">
         <form className="register-form" onSubmit={this.onSubmit}>
-        <h3>Login</h3>
-        <input type="email" onChange={this.onChange} className="input-field" name="email" required placeholder="Enter your Email"/><br/>
-        <input type="password" onChange={this.onChange} className="input-field" name="password" required placeholder="Enter your password"/><br/>
-        <input type="submit" value="Submit" />
+        <h3><FontAwesomeIcon style={{fontSize:"30px",paddingTop:"0px"}} icon={faSignInAlt} />Login</h3>
+        <FontAwesomeIcon style={{fontSize:"30px",paddingTop:"0px"}} icon={faEnvelopeOpen} /><input type="email" onChange={this.onChange} className="input-field" name="email" required placeholder="Enter your Email"/><br/>
+        <FontAwesomeIcon style={{fontSize:"30px",paddingTop:"0px"}} icon={faKey} /><input type="password" onChange={this.onChange} className="input-field" name="password" required placeholder="Enter your password"/><br/>
+        <input type="submit" className="registerButton" value="Submit" />
 
         </form>
-
+        </div>
+        </div>
       </div>
     )
   }

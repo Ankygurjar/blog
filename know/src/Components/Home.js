@@ -1,13 +1,15 @@
 import React, {Component} from 'react'
 
 import HomeBody from './homeBody'
-import Footer from './Footer'
+import Header from './Header'
 
 export default class Home extends Component{
+
   render(){
     return(
       <div>
 
+      <Header/>
         <HomeBody />
 
       </div>

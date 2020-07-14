@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import jwt_decode from 'jwt-decode'
 import axios from 'axios'
+import Header from './Header2'
 
 import { Editor } from '@tinymce/tinymce-react';
 
@@ -66,7 +67,7 @@ export default class AddPost extends Component{
          axios.post('http://localhost:6700/blog/addBlog', blog)
            .then((res)=>{
              alert('Blog Added')
-             this.props.history.push('/')
+             this.props.history.push('/user')
            })
            .catch(err=>{
              alert(err)
@@ -93,8 +94,10 @@ export default class AddPost extends Component{
   render(){
 
     return (
+      <div>
+        <Header/>
       <div className="container">
-        <h3>Hello from Editor</h3>
+        <h3>Paint the world with You thoughts</h3>
 
         <form className="add-blog" onSubmit={this.onSubmit}>
 
@@ -150,11 +153,12 @@ export default class AddPost extends Component{
             <input require="true" type="file" onChange={this.FileChange} name="picture" className="blog-name" />
           </div>
 
-          <input type="submit" value="Submit" className="submit-blog"/>
+          <input type="submit" value="Submit" className="registerButton" style={{marginTop:"10px"}}/>
 
         </form>
 
 
+      </div>
       </div>
     );
   }

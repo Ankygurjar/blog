@@ -1,8 +1,6 @@
 import React, {Component} from 'react'
 import axios from 'axios'
 import Header from './Header2'
-import { faUser, faKey, faEnvelopeOpen, faQuestionCircle, faImage, faRegistered} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default class Register extends Component{
 
@@ -15,12 +13,13 @@ export default class Register extends Component{
       password2: '',
       email: '',
       role: '',
-      files: null
+      files: null,
     }
 
     this.onChange = this.onChange.bind(this)
     this.onSubmit = this.onSubmit.bind(this)
     this.FileChange = this.FileChange.bind(this)
+
   }
 
   onChange(e){
@@ -31,6 +30,7 @@ export default class Register extends Component{
     this.setState({
       [e.target.name]: e.target.value
     })
+    console.log(this.state.name)
   }
 
   FileChange(e){
@@ -38,6 +38,24 @@ export default class Register extends Component{
     this.setState({
       files: e.target.files[0]
     })
+  }
+
+  componentDidMount(){
+    axios.get('http://localhost:6700/admin/myAdmin/'+ this.props.match.params.id)
+      .then((res)=>{
+        this.setState({
+          name:res.data[0].name,
+          username: res.data[0].username,
+          password:res.data[0].password,
+          email:res.data[0].email,
+          role:res.data[0].role,
+          files:res.data[0].profile_picture
+        })
+        console.log(this.state.updateUserPicture)
+      })
+      .catch((err)=>{
+        console.log(err)
+      })
   }
 
   onSubmit(e){
@@ -51,7 +69,7 @@ export default class Register extends Component{
     user.append('password2', this.state.password2)
     user.append('email', this.state.email)
     user.append('role', this.state.role)
-    user.append('picture', this.state.files, this.state.files.name)
+    user.append('profile_picture', this.state.files, this.state.files.name)
     console.log(user)
 
     if(user.getAll('name')!=='' && user.getAll('username') !=='' && user.getAll('password') !=='' && user.getAll('password2') !=='' && user.getAll('email') !=='' && user.getAll('email') !=='' && user.getAll('picture') !==''){
@@ -66,9 +84,9 @@ export default class Register extends Component{
             }
             }
             if(userStatus === true){
-              axios.post('http://localhost:6700/admin/addAdmin', user)
+              axios.put('http://localhost:6700/admin/updateAdmin/'+ this.props.match.params.id, user)
                 .then((res)=>{
-                  alert("Registered")
+                  alert("updated")
                   this.props.history.push('/login')
                 })
                 .catch(err=>{
@@ -90,35 +108,33 @@ export default class Register extends Component{
   render(){
     return(
       <div>
-      <script src="https://kit.fontawesome.com/a076d05399.js"></script>
       <Header/>
-      <div className="register-form-background">
       <div className="container">
 
         <form className="register-form" onSubmit={this.onSubmit}>
 
-          <h3><FontAwesomeIcon style={{fontSize:"30px"}} icon={faRegistered} />Register</h3>
-          <hr/>
+          <h3>Update</h3>
+
           <div className="register-field">
 
-            <FontAwesomeIcon style={{fontSize:"30px",paddingTop:"0px"}} icon={faUser} /><input type="text" onChange={this.onChange} className="input-field" name="name" required placeholder="Enter your name"/><br/>
-            <FontAwesomeIcon style={{fontSize:"30px",paddingTop:"0px"}} icon={faUser} /><input type="text" onChange={this.onChange} className="input-field" name="username" required placeholder="Enter your username"/><br/>
-            <FontAwesomeIcon style={{fontSize:"30px",paddingTop:"0px"}} icon={faKey} /><input type="password" onChange={this.onChange} className="input-field" name="password" required placeholder="Enter your password"/><br/>
-            <FontAwesomeIcon style={{fontSize:"30px",paddingTop:"0px"}} icon={faKey} /><input type="password" onChange={this.onChange} className="input-field" name="password2" required placeholder="Confirm your password"/><br/>
-            <FontAwesomeIcon style={{fontSize:"30px",paddingTop:"0px"}} icon={faEnvelopeOpen} /><input type="email" onChange={this.onChange} className="input-field" name="email" required placeholder="Enter your email"/><br/>
+            <input type="text" onChange={this.onChange} className="input-field" value={this.state.name} name="name" /><br/>
+            <input type="text" onChange={this.onChange} className="input-field" value={this.state.username} name="username" required /><br/>
+            <input type="password" onChange={this.onChange} className="input-field" value={this.state.password} name="password" required /><br/>
+            <input type="password" onChange={this.onChange} className="input-field" name="password2" required /><br/>
+            <input type="email" onChange={this.onChange} className="input-field" value={this.state.email} name="email" required /><br/>
 
-            <FontAwesomeIcon style={{fontSize:"30px",paddingTop:"0px"}} icon={faQuestionCircle} /><select onChange={this.onChange} className="input-field" name="role" required>
+            <select onChange={this.onChange} className="input-field" placeholder={this.state.role} name="role" required>
               <option value="Editor">Editor</option>
               <option value="Admin">Admin</option>
             </select>
 
-            <FontAwesomeIcon style={{fontSize:"30px",paddingTop:"0px"}} icon={faImage} /><input type="file" onChange={this.FileChange} className="input-field" name="profile_picture"/><br/>
+            <input type="file" onChange={this.FileChange}  className="input-field" name="profile_picture"/><br/>
             <input type="submit" className="registerButton" value="Submit" />
 
           </div>
 
         </form>
-        </div>
+
       </div>
       </div>
     )

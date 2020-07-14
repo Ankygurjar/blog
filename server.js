@@ -17,6 +17,8 @@ app.use('/admin', adminRouter)
 const blogRouter = require('./routes/blog')
 app.use('/blog', blogRouter)
 
+console.log(__dirname+'/know/src/images')
+
 app.listen(PORT, ()=>{
   console.log('Server is up and running', PORT)
 })

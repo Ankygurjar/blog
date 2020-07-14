@@ -2,6 +2,7 @@ const Pool = require('pg').Pool
 const multer = require('multer')
 const router = require('express').Router()
 const bcryt = require('bcryptjs')
+const path = require('path');
 
 const pool = new Pool({
   user: "ankit",
@@ -13,9 +14,11 @@ const pool = new Pool({
 
 var today = new Date()
 
+const imagePath = path.join(__dirname, '/../know/public/blog_uploads');
+
 var storage = multer.diskStorage({
   destination: function(req, file, cb){
-    cb(null, 'blog_uploads')
+    cb(null, imagePath)
   },
   filename: function(req, file, cb){
     cb(null, file.fieldname+'-'+ Date.now()+'.png')
@@ -201,6 +204,28 @@ router.delete('/deleteComment/:blogId', (req, res)=>{
     .catch(err=>{
       res.status(400).json(err)
     })
+})
+
+router.post('/getData', (req, res)=>{
+  console.log(req.body)
+  let search = {
+    data: req.body.data
+  }
+
+  if(search.data !== ''){
+    const query='SELECT * FROM blog WHERE blog_body LIKE $1'
+    pool.query(query, ['%'+search.data+'%'])
+      .then((blogsData)=>{
+        res.status(200).json(blogsData.rows)
+        
+      })
+      .catch((err)=>{
+        res.status(400).json(err)
+      })
+  }else{
+    res.status(400).json({status:"Enter a query"})
+  }
+
 })
 
 
