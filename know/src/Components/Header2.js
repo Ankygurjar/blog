@@ -80,13 +80,6 @@ export default class Header extends Component{
             </ul>
           </nav>
 
-          <form className="top-search" >
-
-            <input type="text" className="searchBar" value={this.state.search} onChange={this.onChange} placeholder="enter your query...." name="query" />
-            <Link className="searchBtn" to={`/search/?${this.state.search}`}>Search</Link>
-
-          </form>
-
         </div>
         </div>
 

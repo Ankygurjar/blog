@@ -64,7 +64,7 @@ export default class AddPost extends Component{
          alert("You cannot select NONE as a category for the blog")
        }else{
 
-         axios.post('http://localhost:6700/blog/addBlog', blog)
+         axios.post('http://ec2-3-17-139-40.us-east-2.compute.amazonaws.com:6700/blog/addBlog', blog)
            .then((res)=>{
              alert('Blog Added')
              this.props.history.push('/user')

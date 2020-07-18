@@ -41,7 +41,7 @@ export default class Register extends Component{
   }
 
   componentDidMount(){
-    axios.get('http://localhost:6700/admin/myAdmin/'+ this.props.match.params.id)
+    axios.get('http://ec2-3-17-139-40.us-east-2.compute.amazonaws.com:6700/admin/myAdmin/'+ this.props.match.params.id)
       .then((res)=>{
         this.setState({
           name:res.data[0].name,
@@ -84,7 +84,7 @@ export default class Register extends Component{
             }
             }
             if(userStatus === true){
-              axios.put('http://localhost:6700/admin/updateAdmin/'+ this.props.match.params.id, user)
+              axios.put('http://ec2-3-17-139-40.us-east-2.compute.amazonaws.com:6700/admin/updateAdmin/'+ this.props.match.params.id, user)
                 .then((res)=>{
                   alert("updated")
                   this.props.history.push('/login')

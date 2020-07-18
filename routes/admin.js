@@ -16,7 +16,7 @@ const pool = new Pool({
 process.env.SECRET_KEY = 'topSecret'
 var today = new Date()
 
-const imagePath = path.join(__dirname, '/../know/public/client_uploads');
+const imagePath = path.join(__dirname, '/../know/build/client_uploads');
 
 
 var storage = multer.diskStorage({

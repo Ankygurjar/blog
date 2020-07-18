@@ -151,7 +151,7 @@ body{
 
 .top-menu{
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 2fr;
 }
 
 .top-menu img{
@@ -159,8 +159,8 @@ body{
 }
 
 .top-menu nav{
-  margin-top: 3px;
-  margin-left: -18px;
+  margin-top: 1%;
+  margin-left: 10%;
 }
 
 .top-menu nav ul li{
@@ -182,17 +182,19 @@ body{
   border-radius: 8px;
 }
 
-.top-menu form{
-  margin-top: 20px;
-}
-
-.top-menu form .searchBar{
-  padding: 8px;
-  border-radius: 10px;
-  border: 1px solid black;
+.header-1 .searchBar{
+  width:80%;
+  border: 3px solid #00B4CC;
+  border-right: none;
+  padding: 10px;
+  height: 20px;
+  border-radius: 5px 0 0 5px;
+  outline: none;
+  color: #9DBFAF;
 }
 
 .searchBtn{
+  background-color:#00B4CC;
   text-decoration: none;
   margin: 2px;
   color:black;
@@ -211,12 +213,10 @@ body{
 }
 
 .front-slogan{
-  position: absolute;
-  top:40%;
-  left: 40%;
+  position: relative;
+  margin-top: 30%;
   font-size:1.2em;
-  font-family: cursive;
-
+  width: 100%;
 }
 
 .dlt-btn{
@@ -307,3 +307,53 @@ table td:nth-child(odd){
   width: 100%;
   height: 400px;
 }
+
+
+@media only screen and (max-width: 600px) {
+  .blog {
+    display:block;
+    padding:10px;
+    height:650px;
+  }
+  .blog-image{
+  max-height:45%;
+}
+  .blog-detail{
+  max-height:45%;
+}
+  .container{
+   width:100%;
+   margin:0px;
+   padding:0px;
+}
+   .top-menu{
+   display:grid;
+   grid-template-columns: 1fr;
+}
+   .header-1{
+   font-family:serif;
+}
+   .user{
+   display:grid;
+   grid-template-columns:1fr;
+   clear:both;
+}
+   .user img{
+    max-height:500px;
+}
+.header-1 .searchBar{
+	width:89%;
+}
+.searchBtn{
+	width:90%;
+	text-align:center;
+	display:block;
+	margin-top:2%;
+}
+.header-1{
+	background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+}
+

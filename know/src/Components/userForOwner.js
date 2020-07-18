@@ -14,7 +14,7 @@ export default class UserForOwner extends Component{
   }
 
   componentDidMount(){
-    axios.get('http://localhost:6700/blog/myAdminBlog/'+this.props.match.params.id)
+    axios.get('http://ec2-3-17-139-40.us-east-2.compute.amazonaws.com:6700/blog/myAdminBlog/'+this.props.match.params.id)
       .then((res)=>{
         this.setState({
           blogs: res.data

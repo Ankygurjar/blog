@@ -26,9 +26,6 @@ export default class Register extends Component{
   onChange(e){
     e.preventDefault()
     this.setState({
-      role:e.target.value
-    })
-    this.setState({
       [e.target.name]: e.target.value
     })
   }
@@ -66,7 +63,7 @@ export default class Register extends Component{
             }
             }
             if(userStatus === true){
-              axios.post('http://localhost:6700/admin/addAdmin', user)
+              axios.post('http://ec2-3-17-139-40.us-east-2.compute.amazonaws.com:6700/admin/addAdmin', user)
                 .then((res)=>{
                   alert("Registered")
                   this.props.history.push('/login')
@@ -108,6 +105,7 @@ export default class Register extends Component{
             <FontAwesomeIcon style={{fontSize:"30px",paddingTop:"0px"}} icon={faEnvelopeOpen} /><input type="email" onChange={this.onChange} className="input-field" name="email" required placeholder="Enter your email"/><br/>
 
             <FontAwesomeIcon style={{fontSize:"30px",paddingTop:"0px"}} icon={faQuestionCircle} /><select onChange={this.onChange} className="input-field" name="role" required>
+	      <option value="visitor">--None--</option>
               <option value="Editor">Editor</option>
               <option value="Admin">Admin</option>
             </select>

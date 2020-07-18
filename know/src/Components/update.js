@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import axios from 'axios'
 import jwt_decode from 'jwt-decode'
+import Header from './Header2'
 
 import { Editor } from '@tinymce/tinymce-react';
 
@@ -60,7 +61,7 @@ export default class Update extends Component{
          alert("You cannot select NONE as a category for the blog")
        }else{
 
-         axios.put('http://localhost:6700/blog/updateBlog/'+this.state.blog_id, blog)
+         axios.put('http://ec2-3-17-139-40.us-east-2.compute.amazonaws.com:6700/blog/updateBlog/'+this.state.blog_id, blog)
            .then((res)=>{
              alert('Blog Updated')
              this.props.history.push('/user')
@@ -81,7 +82,7 @@ export default class Update extends Component{
     this.setState({
       by: decode.name
     })
-    axios.get('http://localhost:6700/blog/myBlog/'+ this.props.match.params.id)
+    axios.get('http://ec2-3-17-139-40.us-east-2.compute.amazonaws.com:6700/blog/myBlog/'+ this.props.match.params.id)
       .then(res=>{
         this.setState({
           blog_id: res.data[0].blog_id,
@@ -97,8 +98,9 @@ export default class Update extends Component{
 
   render(){
     return(
+	<div>
+	<Header/>
       <div className="container">
-
       <form className="add-blog" onSubmit={this.onSubmit}>
 
         <div className="blog-data">
@@ -158,6 +160,7 @@ export default class Update extends Component{
       </form>
 
       </div>
+	</div>
     )
   }
 }

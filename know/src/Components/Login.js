@@ -34,7 +34,7 @@ export default class Login extends Component{
       password: this.state.password
     }
 
-    axios.post('http://localhost:6700/admin/login', user)
+    axios.post('http://ec2-3-17-139-40.us-east-2.compute.amazonaws.com:6700/admin/login', user)
       .then((res)=>{
         console.log(res.data)
         sessionStorage.setItem('token', res.data.token)

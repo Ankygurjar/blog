@@ -26,6 +26,19 @@ export default class ListBlogs extends Component{
       })
   }
 
+  deleteBlog(id){
+   let confirmDelete = window.confirm("Are you sure to delete the blog of the user?")
+   if(confirmDelete === true){
+	axios.delete('http://ec2-3-17-139-40.us-east-2.compute.amazonaws.com:6700/blog/deleteBlog/'+id)
+	   .then((res)=>{
+		alert('Blog has been deleted')
+		window.location.reload()
+		})
+	}
+   axios.delete('http://ec2-3-17-139-40.us-east-2.compute.amazonaws.com:6700/blog/deleteBlog/'+id)
+}
+
+
   render(){
     return(
 
@@ -51,6 +64,7 @@ export default class ListBlogs extends Component{
                   <td>{blog.by}</td>
                   <td>{blog.category}</td>
                   <td>{blog.created_at}</td>
+		  <td><button onClick={(e)=>{e.preventDefault(); this.deleteBlog(blog.blog_id)}}>Delete this blog</button></td>
                 </tr>
               </tbody>
             )

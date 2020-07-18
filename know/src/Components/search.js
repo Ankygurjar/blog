@@ -18,7 +18,7 @@ export default class Search extends Component{
     let data = this.props.location.search
     data = data.slice(1, data.length)
     console.log(data)
-    axios.post('http://localhost:6700/blog/getData/', {data})
+    axios.post('http://ec2-3-17-139-40.us-east-2.compute.amazonaws.com:6700/blog/getData/', {data})
       .then((res)=>{
         this.setState({
           data: res.data

@@ -31,7 +31,7 @@ export default class User extends Component{
 
     var c = window.confirm("Pres Yes to delete the post")
     if( c===true ){
-      axios.delete('http://localhost:6700/blog/deleteBLog/'+id)
+      axios.delete('http://ec2-3-17-139-40.us-east-2.compute.amazonaws.com:6700/blog/deleteBLog/'+id)
         .then(res=>{
           alert("Blog has been deleted")
           window.location.reload()
@@ -48,7 +48,7 @@ export default class User extends Component{
       user_id:decode._id
     })
 
-    axios.get('http://localhost:6700/admin/myAdmin/'+decode._id)
+    axios.get('http://ec2-3-17-139-40.us-east-2.compute.amazonaws.com:6700/admin/myAdmin/'+decode._id)
       .then((res)=>{
         this.setState({
           email:res.data[0].email,
@@ -56,13 +56,14 @@ export default class User extends Component{
           profile_picture:res.data[0].profile_picture,
           username:res.data[0].username,
           role:res.data[0].role,
-          joined_on:res.data[0].joined_on
+          joined_on:res.data[0].created_at
         })
+	console.log(res.data[0])
       })
       .catch(err=>{
         console.log(err)
       })
-      axios.get('http://localhost:6700/blog/myAdminBlog/'+decode._id)
+      axios.get('http://ec2-3-17-139-40.us-east-2.compute.amazonaws.com:6700/blog/myAdminBlog/'+decode._id)
         .then(res=>{
           this.setState({
             blogs:res.data
@@ -75,7 +76,7 @@ export default class User extends Component{
     const decode = jwt_decode(sessionStorage.getItem('token'))
     const confirmDelete = window.confirm("You are sure to delete this account? The ACTION CANNOT BE UNDONE!")
     if(confirmDelete === true){
-      axios.delete('http://localhost:6700/admin/deleteAdmin/'+ decode._id)
+      axios.delete('http://ec2-3-17-139-40.us-east-2.compute.amazonaws.com:6700/admin/deleteAdmin/'+ decode._id)
         .then((res)=>{
           alert('User has been deleted')
           sessionStorage.removeItem('token')
@@ -103,8 +104,8 @@ export default class User extends Component{
   }
 
   render(){
-    let date = this.state.joined_on
-    date = new Date(date).toString()
+	console.log(this.state.joined_on)
+
     return(
       <div>
       <Header />
@@ -119,10 +120,11 @@ export default class User extends Component{
         <p>Your Username : <b>{this.state.username}</b></p>
         <p>Your role : <b>{this.state.role}</b></p>
 
-        <p>Joined On : <b>{date}</b></p>
+        <p>Joined On : <b>{this.state.joined_on}</b></p>
       </div>
         <img alt="Shadow" className="blog-image" src={`/client_uploads/${this.state.profile_picture}`}/>
       </div>
+  	<br/><br/>
         <Link className="update-btn" to={`/updateUser/${this.state.user_id}`}>Update</Link>
 
         <button className="dlt-btn" onClick={this.deleteUser}>Delete</button>

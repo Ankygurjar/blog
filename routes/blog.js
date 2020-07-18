@@ -14,7 +14,7 @@ const pool = new Pool({
 
 var today = new Date()
 
-const imagePath = path.join(__dirname, '/../know/public/blog_uploads');
+const imagePath = path.join(__dirname, '/../know/build/blog_uploads');
 
 var storage = multer.diskStorage({
   destination: function(req, file, cb){

@@ -16,7 +16,7 @@ export default class Users extends Component{
   }
 
   componentDidMount(){
-    axios.get('http://localhost:6700/admin/getAdmins')
+    axios.get('http://ec2-3-17-139-40.us-east-2.compute.amazonaws.com:6700/admin/getAdmins')
       .then((res)=>{
         this.setState({
           users: res.data
@@ -31,7 +31,7 @@ export default class Users extends Component{
     let confirmDelete = window.confirm("You want to delete the current user?")
 
     if(confirmDelete === true){
-      axios.delete('http://localhost:6700/admin/deleteAdmin/'+id)
+      axios.delete('http://ec2-3-17-139-40.us-east-2.compute.amazonaws.com:6700/admin/deleteAdmin/'+id)
         .then((res)=>{
           alert("User Deleted")
           window.location.reload()

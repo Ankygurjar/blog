@@ -21,7 +21,7 @@ export default class HomeBody extends Component{
   }
 
   componentDidMount(){
-    axios.get("http://localhost:6700/blog/getBlogs")
+    axios.get("http://ec2-3-17-139-40.us-east-2.compute.amazonaws.com:6700/blog/getBlogs")
       .then((res)=>{
         this.setState({
           blogs: res.data
@@ -49,7 +49,7 @@ export default class HomeBody extends Component{
       blog_id: id.toString()
     }
 
-    axios.post('http://localhost:6700/blog/addComment', comment)
+    axios.post('http://ec2-3-17-139-40.us-east-2.compute.amazonaws.com:6700/blog/addComment', comment)
       .then((res)=>{
         alert("Comment has been saved")
         window.location.reload()

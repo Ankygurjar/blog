@@ -47,7 +47,7 @@ export default class Blog extends Component{
       blog_id: this.props.match.params.id
     }
 
-    axios.post('http://localhost:6700/blog/addComment', comment)
+    axios.post('http://ec2-3-17-139-40.us-east-2.compute.amazonaws.com:6700/blog/addComment', comment)
       .then((res)=>{
         alert("Comment has been saved")
         window.location.reload()
@@ -61,18 +61,21 @@ export default class Blog extends Component{
   componentDidMount(){
     if(sessionStorage.token){
     const decode = jwt_decode(this.state.ownerToken)
-    const UserStatus = "owner"
-
-    axios.get('http://localhost:6700/admin/myAdmin/'+decode._id)
+    let UserStatus = "owner"   
+    axios.get('http://ec2-3-17-139-40.us-east-2.compute.amazonaws.com:6700/admin/myAdmin/'+decode._id)
       .then((res)=>{
-        if(res.data[0].role===UserStatus){
+	console.log(res.data[0].role)
+	if(res.data[0].role===UserStatus){
           this.setState({
             ownerPrivilage:true
           })
-        }
+	}
       })
+	.catch(err=>{
+	console.log(err)
+})
     }
-    axios.get('http://localhost:6700/blog/myBlog/'+this.props.match.params.id)
+    axios.get('http://ec2-3-17-139-40.us-east-2.compute.amazonaws.com:6700/blog/myBlog/'+this.props.match.params.id)
       .then(res=>{
         this.setState({
           blog_id: res.data[0].blog_id,
@@ -89,7 +92,7 @@ export default class Blog extends Component{
         console.log(err)
       })
 
-    axios.get("http://localhost:6700/blog/getComments/"+ this.props.match.params.id)
+    axios.get("http://ec2-3-17-139-40.us-east-2.compute.amazonaws.com:6700/blog/getComments/"+ this.props.match.params.id)
       .then((res)=>{
         this.setState({
           comments:res.data
@@ -103,7 +106,7 @@ export default class Blog extends Component{
   deleteBlog(id){
     const confirm = window.confirm("Are your sure to delete this blog?")
     if(confirm===true){
-    axios.delete("http://localhost:6700/blog/deleteBLog/"+id)
+    axios.delete("http://ec2-3-17-139-40.us-east-2.compute.amazonaws.com:6700/blog/deleteBLog/"+id)
       .then((res)=>{
         alert("Blog deleted")
         this.props.history.push('/')
@@ -131,7 +134,7 @@ export default class Blog extends Component{
     console.log(id)
     const confirmDelete = window.confirm("Are you sure to delete the comment?")
     if(confirmDelete === true){
-      axios.delete('http://localhost:6700/blog/deleteComment/'+id)
+      axios.delete('http://ec2-3-17-139-40.us-east-2.compute.amazonaws.com:6700/blog/deleteComment/'+id)
         .then((res)=>{
           alert("Comment has been deleted")
           window.location.reload()

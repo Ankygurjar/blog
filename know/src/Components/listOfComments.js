@@ -17,7 +17,7 @@ export default class ListComments extends Component{
   }
 
   componentDidMount(){
-    axios.get('http://localhost:6700/blog/getComments')
+    axios.get('http://ec2-3-17-139-40.us-east-2.compute.amazonaws.com:6700/blog/getComments')
       .then((res)=>{
         this.setState({
           comments: res.data
@@ -31,7 +31,7 @@ export default class ListComments extends Component{
   deleteComment(id){
     const confirmDelete = window.confirm("Are your sure to delete this comment?")
     if(confirmDelete===true){
-      axios.delete('http://localhost:6700/blog/deleteComment/'+id)
+      axios.delete('http://ec2-3-17-139-40.us-east-2.compute.amazonaws.com:6700/blog/deleteComment/'+id)
         .then((res)=>{
           alert("Comment has been deleted")
           window.location.reload()
